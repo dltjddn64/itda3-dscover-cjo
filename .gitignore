@@ -1,0 +1,13 @@
+# 데이터 / 가중치 (용량 큼, Git에 올리지 않음. download_weights.sh로 받을 것)
+data/raw/
+weights/*
+!weights/.gitkeep
+outputs/
+
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
