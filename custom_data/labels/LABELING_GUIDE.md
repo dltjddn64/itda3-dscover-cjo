@@ -37,6 +37,6 @@ CSV, 컬럼: `image_id, filename, date_candidates_raw`
 - 완전히 붙여쓴 월이름+숫자 (`AUG292020`처럼 구분자 하나도 없는 경우) — 가능하면 `AUG 29 2020`처럼 한 칸씩 띄어서 적어주세요
 
 ## 현재 진행 상황
-- `data/labels/validation_labels.csv`: 150장, 직접 눈으로 확인한 최종 정답 (완료)
-- `data/labels/500_candidates_resolved.csv`: 500장, 458장 자동 해결 + 42장 수동 확인 필요 (`NEEDS_MANUAL_REVIEW`로 표시됨)
+- `custom_data/labels/validation_labels.csv`: 150장, 직접 눈으로 확인한 최종 정답 (완료)
+- `custom_data/labels/500_candidates_resolved.csv`: 500장, 458장 자동 해결 + 42장 수동 확인 필요 (`NEEDS_MANUAL_REVIEW`로 표시됨)
 - 두 데이터셋은 겹치지 않음 (합치면 총 650장)

@@ -259,6 +259,15 @@ submission.csv (image_id, year, month, day, final_date)
 - 조직위가 다음 규칙을 명시적으로 안내: year/month/day는 인식된 필드만 채우고 나머지는 각각 "NONE", `final_date`는 세 값을 하이픈으로 연결하되 **셋 다 NONE일 때만 예외적으로 "NONE" 하나로** 작성. month/day는 반드시 2자리(`05`, `09`)
 - 어제(9/11) 부분점수 대응 구조로 바꾼 로직이 이미 이 규칙과 정확히 일치 — `extract_expiry_date()`가 전부 NONE일 때 `"NONE"`을 반환하고, 부분 인식 시 `"NONE-08-25"` 형태로 정확히 조립하는 것 실제 테스트로 재확인함. 추가 수정 없음
 
+### 2026-09-14 — 조직위 공지: `custom_data/` 폴더 규격 신설 (가산점 심사용) → 라벨 데이터 이동
+- 조직위가 가산점 심사를 위해 저장소 루트에 `custom_data/` 폴더 신설을 요청 (내부 구조 자유, 루트 README.md에 1~2줄 안내 필수, 파일당 100MB 제한)
+- 기존 `data/labels/`(라벨 CSV들)와 루트의 `ITDA_500_image_date_candidates.csv`를 `custom_data/`로 이동 (`git mv`로 이력 보존)
+  - `custom_data/labels/`: `master_labels.csv`(587장 통합), `validation_labels.csv`(직접 라벨링 150장), `500_candidates_resolved.csv`, `LABELING_GUIDE.md`
+  - `custom_data/ITDA_500_image_date_candidates.csv`: 팀원이 수집한 500장 원본 후보
+- `src/`, `predict.ipynb`는 이 경로를 참조하지 않아 이동으로 인한 실행 영향 없음(사전 grep으로 확인)
+- 루트 `README.md`에 안내 문구 추가, `custom_data/README.md` 신규 작성, `LABELING_GUIDE.md` 내부 경로 참조 갱신
+- 총 용량 92KB — 100MB 제한과 무관, 이미지 원본은 포함하지 않음(라벨은 `image_id`로 대회 제공 원본 이미지를 참조하는 방식이라 재업로드 불필요)
+
 ## 현재 알려진 한계 (정직하게 기록)
 
 > ⚠️ 이 섹션은 2026-09-09에 처음 작성된 뒤 계속 방치됐던 스냅샷이라 아래 최신 로그(엔진 교체, 정규식 수정,

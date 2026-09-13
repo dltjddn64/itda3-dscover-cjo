@@ -11,7 +11,9 @@
 │
 ├── data/
 │   ├── raw/              # 원본 이미지 3,352장 (git 미포함, 대회 제공)
-│   └── labels/           # 자체 구축한 라벨링 결과 (608장, 가산점 근거)
+│   └── sample_test/      # 검증용 샘플 이미지 5장
+│
+├── custom_data/          # 자체 수집·라벨링 데이터 (가산점 근거) — 구조는 custom_data/README.md 참고
 │
 ├── src/                  # 재사용 파이프라인 모듈
 │   ├── preprocess.py      # 이미지 전처리
@@ -68,8 +70,13 @@ ITDA_INPUT_DIR=./data/raw ITDA_OUTPUT_PATH=./outputs/submission.csv \
 - [x] 결과 스키마 `image_id, year, month, day, final_date` 5개 컬럼 정확히 일치
 - [x] `requirements.txt`에 `nbconvert`, `ipykernel` 포함
 - [x] 가중치 로컬화 및 오프라인 실행 검증 완료 (위 섹션 참고)
-- [ ] **GitHub 저장소 접근 권한 설정** — Public으로 생성하거나, Private이면 운영진 계정(`b9511242000-blip`)을 Collaborator로 초대 필요 (아직 미완료 — 저장소 생성 후 처리할 것)
+- [x] GitHub 저장소 접근 권한 설정 — Public으로 생성 완료
+- [x] `custom_data/` 폴더에 자체 라벨링 데이터 정리 완료 (가산점 심사용, 구조는 `custom_data/README.md` 참고)
 - [ ] 최종 Commit Hash 확정 후 이메일 제출 (`dataitda5@gmail.com`)
+
+## 자체 수집 데이터 (가산점)
+
+`custom_data/`에 자체 라벨링한 587장 정답 CSV(`labels/master_labels.csv`)와 원본 라벨 후보가 있습니다. 세부 구조는 `custom_data/README.md` 참고.
 
 ## 참고
 
