@@ -83,3 +83,11 @@ ITDA_INPUT_DIR=./data/raw ITDA_OUTPUT_PATH=./outputs/submission.csv \
 - 대회 공식 안내서(노션) 기준 제출 규격이 최우선입니다.
 - `notebooks/`는 실험용이라 채점되지 않으며, 채점 대상은 `predict.ipynb` 하나뿐입니다.
 - 파이프라인 개발 과정과 모든 실험/실패 기록은 `PIPELINE.md` 참고.
+
+## 참고문헌
+
+아키텍처 요약서 PDF는 A4 2장 분량 제한으로 본문에 인용번호만 표기했습니다. 상세 출처는 아래를 참고하세요.
+
+[1] PaddleOCR — PaddlePaddle Authors. *PaddleOCR: Awesome multilingual OCR toolkits*. https://github.com/PaddlePaddle/PaddleOCR (검출: PP-OCRv5_server_det, 인식: korean_PP-OCRv5_mobile_rec 모델 사용)
+
+[2] EasyOCR — JaidedAI. *EasyOCR: Ready-to-use OCR with 80+ supported languages*. https://github.com/JaidedAI/EasyOCR
