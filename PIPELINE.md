@@ -282,3 +282,11 @@ submission.csv (image_id, year, month, day, final_date)
 - 회전/줄무늬배경/반사광처럼 순수 이미지 품질 문제로 인한 탐지 실패는 로직 수정으로 한계 도달 (mag_ratio, textline_orientation, CLAHE 등 다 시도했으나 개선 없음)
 - 검증셋 라벨(608장) 자체에도 소량의 사람 실수가 있었음이 확인됨 (재검토 중 7건 발견/수정) — 완벽한 정답셋은 아님
 - [x] 자체 라벨링 전략 수립 (가산점 항목) — 완료: 검증셋 608장 라벨링 (150 직접 + 458 팀원 라벨 자동 정리)
+
+### 2026-09-15 — 조직위, 채점 환경 세부 사양 공지 → 3가지 컴플라이언스 수정 (마감일)
+- 공지 내용: Ubuntu 22.04 x86_64, Python 3.10, CPU 4코어/RAM 8GB, GPU 없음, 오프라인, **팀별 순수 venv**(conda 아님)에서 `requirements.txt` 설치. 버전 정확히 고정 요구. **가중치 다운로드 코드는 `download_weights.sh`에만, `predict.ipynb`는 로컬 파일을 읽기만 해야 함**(명시적 금지)
+- 점검 및 수정:
+  1. **RAM 8GB 여유 확인**: 20장 처리 기준 peak memory 약 3.1GB로 측정, 여유 충분 (`/usr/bin/time -l`로 실측)
+  2. **requirements.txt 버전 고정**: 기존 `>=` 범위 지정을 전부 `==` 정확한 버전으로 교체 (torch==2.14.0 등 실제 설치된 버전 기준)
+  3. **`predict.ipynb` 내 암묵적 온라인 다운로드 폴백 제거**: `PaddleEngine.__init__`에 있던 "로컬 가중치 없으면 온라인 다운로드에 의존"하는 fallback 분기를 제거하고, 로컬 가중치가 없으면 즉시 `RuntimeError`로 멈추도록 변경 (조직위 신규 규정 문자 그대로 준수 — 노트북 안에 다운로드 가능성 자체를 없앰)
+- **최종 검증**: conda 없이 순수 `venv`(`python3.10 -m venv`)를 새로 만들어 `pip install -r requirements.txt`로만 설치 → 네트워크 차단(프록시 무효화) 상태에서 `predict.ipynb` Run All 실행 → 정상 완주, 결과 정확함을 확인. 조직위가 설명한 채점 환경과 가장 가깝게 재현한 검증

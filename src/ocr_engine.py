@@ -82,16 +82,23 @@ class PaddleEngine:
             use_doc_unwarping=False,
             use_textline_orientation=False,
         )
-        if det_dir.exists() and rec_dir.exists():
-            # 로컬에 미리 받아둔 가중치를 직접 지정 -> 인터넷 접속 시도 자체가 없어짐
-            kwargs["text_detection_model_name"] = DET_MODEL_NAME
-            kwargs["text_detection_model_dir"] = str(det_dir)
-            kwargs["text_recognition_model_name"] = REC_MODEL_NAME
-            kwargs["text_recognition_model_dir"] = str(rec_dir)
-            print(f"로컬 가중치 사용: {weights_dir}/")
-        else:
-            print(f"경고: {weights_dir}/에 로컬 가중치가 없음 — 온라인 자동 다운로드에 의존함 "
-                  f"(오프라인 채점 환경에서는 실패할 수 있음, download_weights.sh 먼저 실행 필요)")
+        if not (det_dir.exists() and rec_dir.exists()):
+            # 채점 서버는 오프라인이라 여기서 온라인 자동 다운로드로 조용히 넘어가면 안 됨.
+            # 가중치를 받는 코드는 download_weights.sh에만 있어야 하고, 이 노트북(predict.ipynb)은
+            # 이미 받아둔 로컬 파일을 읽기만 해야 한다는 규정(2026-09-14 조직위 공지)에 따라
+            # 로컬 가중치가 없으면 그냥 에러를 내고 멈춘다 (온라인 다운로드로 폴백하지 않음).
+            raise RuntimeError(
+                f"로컬 가중치를 찾을 수 없습니다: {det_dir} / {rec_dir}\n"
+                f"채점 서버는 오프라인이라 predict.ipynb 안에서는 가중치를 받을 수 없습니다. "
+                f"먼저 'bash download_weights.sh'를 실행해서 weights/ 폴더를 채워주세요."
+            )
+
+        # 로컬에 미리 받아둔 가중치를 직접 지정 -> 인터넷 접속 시도 자체가 없어짐
+        kwargs["text_detection_model_name"] = DET_MODEL_NAME
+        kwargs["text_detection_model_dir"] = str(det_dir)
+        kwargs["text_recognition_model_name"] = REC_MODEL_NAME
+        kwargs["text_recognition_model_dir"] = str(rec_dir)
+        print(f"로컬 가중치 사용: {weights_dir}/")
 
         print("PaddleOCR 엔진 초기화 중...")
         self.ocr = PaddleOCR(**kwargs)
